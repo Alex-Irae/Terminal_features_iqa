@@ -52,7 +52,6 @@ pip install -r requirements.txt
 ```
 CNR (Medical):     TFI = 0.82 ✓ (Terminal)
 SSIM (Natural):    TFI = 0.52 ✗ (Non-terminal)  
-SNR (Medical):     TFI = 0.31 ✗ (Supplementary)
 ```
 
 ## Theoretical Framework
@@ -134,7 +133,7 @@ adapted_model = analyzer.few_shot_adapt(source_model, target_samples)
 ```bibtex
 @inproceedings{carminot2026terminal,
   title={Terminal Features in Domain-Specific IQA Calibration: A Signal Processing Framework for Identifying Task-Directed Metrics},
-  author={Carminot, A.},
+  author={Carminot, Alexandre and Ke, Jing},
   booktitle={ICASSP 2026-2026 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
   year={2026},
   organization={IEEE}
@@ -162,7 +161,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 - **Issues**: Use GitHub Issues for bug reports and feature requests
 - **Discussions**: Join our discussions for theoretical questions
-- **Email**: [alexandre.camrinot@outlook.com] for collaboration inquiries
+- **Email**: [alexandre.carminot@outlook.com] for collaboration inquiries
 
 ## License
 
