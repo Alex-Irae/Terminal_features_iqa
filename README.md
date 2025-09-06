@@ -94,15 +94,15 @@ This isn't correlation—it's mathematical necessity for boundary detection algo
 ## Applications & Use Cases
 
 ### When Terminal Features Apply
-✅ **Medical imaging**: Tissue contrast determines diagnostic utility  
-✅ **Industrial inspection**: Defect size drives quality decisions  
-✅ **Spectral imaging**: Absorption peaks define chemical identification  
-✅ **Satellite monitoring**: Vegetation indices predict agricultural yield
+ **Medical imaging**: Tissue contrast determines diagnostic utility  
+ **Industrial inspection**: Defect size drives quality decisions  
+ **Spectral imaging**: Absorption peaks define chemical identification  
+ **Satellite monitoring**: Vegetation indices predict agricultural yield
 
 ### When They Don't Apply
-❌ **Natural images**: Perceptual quality emerges from feature interactions  
-❌ **Artistic evaluation**: Aesthetic judgment requires holistic assessment  
-❌ **Complex scene understanding**: Multiple competing objectives
+ **Natural images**: Perceptual quality emerges from feature interactions  
+ **Artistic evaluation**: Aesthetic judgment requires holistic assessment  
+ **Complex scene understanding**: Multiple competing objectives
 
 ### Decision Framework
 1. Does task success depend on a **single dominant physical property**?
