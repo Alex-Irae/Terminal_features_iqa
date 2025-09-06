@@ -27,7 +27,7 @@ Image quality assessment in specialized domains faces a critical disconnect: per
 ### Installation
 
 ```bash
-git clone https://github.com/Alex-Irae/terminal_feayures_iqa.git
+git clone https://github.com/Alex-Irae/terminal_features_iqa.git
 cd terminal-iqa
 pip install -r requirements.txt
 ```
