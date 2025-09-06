@@ -152,7 +152,7 @@ if __name__ == "__main__":
     ap.add_argument(
         "--root",
         help="Path containing BraTS20_Training_Data/",
-        default="C:/Users/Irae/Desktop/PHD/Paper SJTU/DS_dump/1/BraTS2020_TrainingData",
+        default="./DS_dump/1/BraTS2020_TrainingData",
     )
     ap.add_argument("--out", help="Output folder for 100-image dataset", default="./BraTS_DS/")
     args = ap.parse_args()

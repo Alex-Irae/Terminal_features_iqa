@@ -17,7 +17,6 @@ from models.unified_eval import UnifiedEvaluator
 def run_shared_parameter_grid_search(df, target_column="dice_score", domain="medical", n_splits=5, save_results=True):
     """
     Grid search to find the best shared parameters for both Random Forest and XGBoost.
-    MODIFIED: Now uses UnifiedEvaluator for consistent evaluation and preprocessing.
     Parameters:
     -----------
     df : pd.DataFrame
@@ -34,10 +33,6 @@ def run_shared_parameter_grid_search(df, target_column="dice_score", domain="med
     --------
     dict: Grid search results with best parameters
     """
-    print(f"\n{'='*80}")
-    print(f"SHARED PARAMETER GRID SEARCH - {domain.upper()} DOMAIN")
-    print(f"Using Unified Evaluation Framework")
-    print(f"{'='*80}")
     print(f"Target: {target_column}")
     print(f"Cross-validation folds: {n_splits}")
     if target_column not in df.columns:
@@ -175,9 +170,6 @@ def run_shared_parameter_grid_search(df, target_column="dice_score", domain="med
     print(f"\nPerformance cost of shared parameters:")
     print(f"  RF performance loss:  {rf_loss:.4f} ({rf_loss/rf_best['rf_r2_mean']*100:.1f}%)")
     print(f"  XGB performance loss: {xgb_loss:.4f} ({xgb_loss/xgb_best['xgb_r2_mean']*100:.1f}%)")
-    print(f"\n{'='*60}")
-    print("VERIFICATION WITH UNIFIED EVALUATOR:")
-    print(f"{'='*60}")
     verification_evaluator = UnifiedEvaluator(domain=domain, random_state=42, n_splits=n_splits, verbose=False)
     original_get_model = verification_evaluator._get_model
     def get_model_with_best_params(method, input_dim=None):

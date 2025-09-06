@@ -4,11 +4,6 @@ import matplotlib.pyplot as plt
 from mmisc import RESULTS
 def generate_comparative_summary(medical_results, natural_results, comparison_results, domain):
     """Generate comprehensive comparative analysis summary using dynamic results"""
-    print("\n" + "=" * 80)
-    print("COMPARATIVE ANALYSIS SUMMARY")
-    print("=" * 80)
-    print("\nEXECUTIVE SUMMARY:")
-    print("-" * 40)
     med_best_model, med_best_score = get_best_model(medical_results.get("calibration", {}))
     print("This study reveals domain-specific optimization principles in IQA calibration:")
     if med_best_model:
@@ -42,9 +37,6 @@ def generate_comparative_summary(medical_results, natural_results, comparison_re
     print("\n4. STATISTICAL SIGNIFICANCE:")
     print("-" * 40)
     print_statistical_summary(medical_results, natural_results, comparison_results)
-    print_practical_recommendations(medical_results, natural_results)
-    print_scientific_contributions()
-    generate_latex_tables(medical_results, natural_results, comparison_results, domain)
     generate_publication_figures(medical_results, natural_results, comparison_results, domain)
 def get_best_model(calibration_results):
     """Extract the best performing model from calibration results"""
@@ -101,7 +93,7 @@ def print_natural_findings(natural_results):
     else:
         print("   No valid calibration results available")
 def extract_feature_importance(medical_results):
-    """Extract feature importance from medical results - FIXED to handle tuple return"""
+    """Extract feature importance from medical results"""
     feature_importance = {}
     if "ablation" in medical_results:
         ablation_data = medical_results["ablation"]
@@ -205,81 +197,6 @@ def print_statistical_summary(medical_results, natural_results, comparison_resul
             print("    IQA metrics show different distributions between domains")
         print("    Medical: Structured, physics-based degradations")
         print("    Natural: Diverse, perceptually-motivated distortions")
-def print_practical_recommendations(medical_results, natural_results):
-    """Print practical recommendations based on actual results"""
-    print("\n5. PRACTICAL RECOMMENDATIONS:")
-    print("-" * 40)
-    print("\n   For Medical Imaging:")
-    if medical_results and "calibration" in medical_results:
-        best_model, best_score = get_best_model(medical_results["calibration"])
-        if best_model:
-            print(f"    Deploy {best_model} for production (R^2={best_score:.3f})")
-        feature_importance = extract_feature_importance(medical_results)
-        if feature_importance:
-            print("    Focus on top-performing features:")
-            sorted_features = sorted(
-                feature_importance.items(),
-                key=lambda x: abs(x[1]) if isinstance(x[1], (int, float)) else 0,
-                reverse=True,
-            )
-            for feature, importance in sorted_features[:3]:
-                if isinstance(importance, (int, float)):
-                    print(f"     - {feature} (importance: {importance:.3f})")
-    else:
-        print("    Recommendations pending calibration analysis")
-    print("    Consider modality-specific calibration for optimal results")
-    print("\n   For Natural Images:")
-    if natural_results and "calibration" in natural_results:
-        best_model, best_score = get_best_model(natural_results["calibration"])
-        if best_model:
-            print(f"    Consider {best_model} as starting point (R^2={best_score:.3f})")
-        insight = get_natural_domain_insight(natural_results)
-        print(f"    Strategy: {insight}")
-    else:
-        print("    Test both tree-based and neural approaches")
-        print("    Consider image features beyond IQA metrics")
-        print("    Benchmark against medical domain best practices")
-def print_scientific_contributions():
-    """Print scientific contributions"""
-    print("\n6. SCIENTIFIC CONTRIBUTIONS:")
-    print("-" * 40)
-    print("   1. First systematic comparison of calibration methods across domains")
-    print("   2. Empirical proof that model complexity should match data characteristics")
-    print("   3. Comprehensive framework for domain-adaptive IQA calibration")
-    print("   4. Practical guidelines for practitioners in both domains")
-def generate_latex_tables(medical_results, natural_results, comparison_results, domain):
-    """Generate publication-ready LaTeX tables using dynamic data"""
-    models_data = []
-    if medical_results and "calibration" in medical_results:
-        for model, results in medical_results["calibration"].items():
-            if isinstance(results, dict):
-                models_data.append(
-                    {
-                        "model": model,
-                        "medical_r2": results.get("r2_mean", 0),
-                        "medical_r2_std": results.get("r2_std", 0),
-                        "medical_mse": results.get("mse_mean", 0),
-                        "natural_r2": 0,
-                        "natural_mse": 0,
-                    }
-                )
-    if natural_results and "calibration" in natural_results:
-        for model_data in models_data:
-            model = model_data["model"]
-            if model in natural_results["calibration"]:
-                nat_results = natural_results["calibration"][model]
-                if isinstance(nat_results, dict):
-                    model_data["natural_r2"] = nat_results.get("r2_mean", 0)
-                    model_data["natural_mse"] = nat_results.get("mse_mean", 0)
-    latex_table1 = generate_performance_table(models_data)
-    latex_table2 = generate_feature_importance_table(medical_results)
-    output_path = Path(RESULTS / domain / "latex_tables_comparative.tex")
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(output_path, "w") as f:
-        f.write(latex_table1)
-        f.write("\n\n")
-        f.write(latex_table2)
-    print(f"\n LaTeX tables saved to {output_path}")
 def generate_performance_table(models_data):
     """Generate LaTeX table for model performance"""
     latex_lines = [
@@ -944,10 +861,6 @@ def create_figure4_deployment_guide(comparison_results, domain):
     fig.suptitle("Figure 4: Practical Deployment Guide for IQA Calibration", fontsize=14, fontweight="bold")
     ax_tree = fig.add_subplot(gs[:2, :])
     ax_tree.axis("off")
-    tree_text = generate_decision_tree_text(comparison_results)
-    ax_tree.text(
-        0.5, 0.5, tree_text, transform=ax_tree.transAxes, ha="center", va="center", fontsize=10, fontfamily="monospace"
-    )
     ax_perf = fig.add_subplot(gs[2, 0])
     perf_matrix = generate_performance_matrix(comparison_results)
     models = ["Linear", "RF", "XGB", "CNN"]
@@ -986,58 +899,11 @@ def create_figure4_deployment_guide(comparison_results, domain):
     ax_complex.set_title("Complexity-Performance Trade-off")
     ax_complex.axhline(y=0, color="black", linestyle="--", alpha=0.5)
     ax_complex.grid(True, alpha=0.3)
-    ax_check = fig.add_subplot(gs[2, 2])
-    ax_check.axis("off")
-    checklist_text = generate_deployment_checklist(comparison_results)
-    ax_check.text(
-        0.05,
-        0.95,
-        checklist_text,
-        transform=ax_check.transAxes,
-        fontsize=9,
-        verticalalignment="top",
-        fontfamily="monospace",
-        bbox=dict(boxstyle="round", facecolor="lightgreen", alpha=0.3),
-    )
     plt.tight_layout()
     plt.savefig(Path(RESULTS / domain / "figures/figure4_deployment_guide.png"), dpi=300, bbox_inches="tight")
     plt.savefig(Path(RESULTS / domain / "figures/figure4_deployment_guide.pdf"), bbox_inches="tight")
     plt.close()
     print(" Figure 4: Deployment guide saved")
-def generate_decision_tree_text(comparison_results):
-    """Generate dynamic decision tree text based on results"""
-    best_medical = "Random Forest"
-    best_medical_score = "0.70-0.75"
-    if comparison_results and "medical_results" in comparison_results:
-        medical_results = comparison_results["medical_results"]
-        if "calibration" in medical_results:
-            best_model, best_score = get_best_model(medical_results["calibration"])
-            if best_model:
-                best_medical = best_model.replace("_", " ").title()
-                best_medical_score = f"{best_score:.3f}"
-    tree_text = f"""
-                            START: IQA Calibration Needed
-                                        |
-                            |                         |
-                        Medical Domain?          Natural Domain?
-                            |                         |
-                              |
-                |                   |              |
-            Tabular Features?    Image Features?      |
-                |                   |              |
-            |       |           |       |     |         |
-            YES      NO         YES      NO   Complex   Simple
-            |       |           |       |     Distort? Distort?
-                                              |         |
-            {best_medical}    Consider      CNN    Hybrid     Deep    Linear
-        R^2={best_medical_score}  Images     Future    TBD      Model    Model
-RECOMMENDED CONFIGURATIONS:
-Medical + Tabular  {best_medical} (PROVEN: R^2={best_medical_score})
-Medical + Images  CNN with medical priors (FUTURE WORK)
-Natural + Complex  Deep architectures (HYPOTHESIS)
-Natural + Simple  Tree-based methods (LIKELY)
-"""
-    return tree_text
 def generate_performance_matrix(comparison_results):
     """Generate performance matrix from comparison results"""
     default_matrix = np.array([[0.565, 0.0], [0.737, 0.0], [0.723, 0.0], [0.0, 0.0]])
@@ -1090,43 +956,4 @@ def generate_complexity_analysis(comparison_results):
         if model not in complexity_data:
             complexity_data[model] = data
     return complexity_data
-def generate_deployment_checklist(comparison_results):
-    """Generate dynamic deployment checklist"""
-    best_medical = "Random Forest"
-    best_medical_score = "0.70-0.75"
-    if comparison_results and "medical_results" in comparison_results:
-        medical_results = comparison_results["medical_results"]
-        if "calibration" in medical_results:
-            best_model, best_score = get_best_model(medical_results["calibration"])
-            if best_model:
-                best_medical = best_model.replace("_", " ").title()
-                best_medical_score = f"{best_score:.2f}-{best_score+0.05:.2f}"
-    natural_available = (
-        comparison_results
-        and "natural_results" in comparison_results
-        and comparison_results["natural_results"]
-        and "calibration" in comparison_results["natural_results"]
-    )
-    checklist_text = f"""DEPLOYMENT CHECKLIST:
- MEDICAL IMAGING:
- Use {best_medical}
- Extract 8 IQA metrics
- Include CNR (critical)
- Encode pathology state
- Skip deep learning for tabular
- Cache models per modality
-{"" if natural_available else ""} NATURAL IMAGES:
- Test multiple approaches
- Consider image features
- Evaluate complexity need
- Benchmark against medical
- WARNINGS:
- Hierarchical may fail on tabular
- Feature importance varies by domain
- Modality encoding impact varies
- Simple may outperform complex
- EXPECTED PERFORMANCE:
-Medical: R^2 = {best_medical_score}
-Natural: R^2 = {"Available" if natural_available else "TBD"}
-Cross-domain: R^2 = 0.30-0.50"""
-    return checklist_text
+

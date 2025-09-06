@@ -37,17 +37,11 @@ def main_visualization_pipeline(results_df, domain="medical"):
     return results_df
 def create_publication_figures(results_df, domain):
     """Wrapper to generate Figure 1 & 2; Figure 4 & 5 are produced in Phase 3."""
-    print("\n" + "=" * 50)
-    print("CREATING PUBLICATION FIGURES")
-    print("=" * 50)
     create_modality_bias_figure(results_df, domain)
     create_distortion_impact_figure(results_df, domain)
     print(" Publication figures created in 'Results_/figures/' directory")
 def create_statistical_table(results_df, domain):
     """Create comprehensive statistical analysis table and ANOVA file + LaTeX table."""
-    print("\n" + "=" * 50)
-    print("STATISTICAL ANALYSIS TABLE")
-    print("=" * 50)
     metrics = get_all_metrics()
     modalities = ["T1", "T2", "FLAIR"]
     stats_data = []
@@ -157,9 +151,6 @@ def analyze_segmentation_correlation(results_df, cache_file=None, domain="medica
         print("! Insufficient valid data for correlation analysis.")
         return {}
     print(f"? Analyzing correlations with {len(valid_data)} valid samples")
-    print("\n" + "=" * 60)
-    print("FIGURE 3: IQA-SEGMENTATION CORRELATION RESULTS")
-    print("=" * 60)
     metrics = [m for m in get_all_metrics() if m in valid_data.columns]
     pearsons = {}
     min_pairs = 10

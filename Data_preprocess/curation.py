@@ -3,9 +3,6 @@ import argparse
 from pathlib import Path
 from PIL import Image
 def fix_png(path: Path):
-    """
-    Open the PNG at `path`, remove any ICC profile, re-save, and replace.
-    """
     try:
         with Image.open(path) as img:
             img_info = img.info
